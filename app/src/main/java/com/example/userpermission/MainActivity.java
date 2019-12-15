@@ -1,5 +1,6 @@
 package com.example.userpermission;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -8,21 +9,24 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import javax.xml.transform.Result;
+
 public class MainActivity extends AppCompatActivity {
-    private ImageView imageView;
+    private ImageView imageview;
     private Button button_image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        imageView = findViewById(R.id.imageview);
+        imageview = findViewById(R.id.imageview);
         button_image = findViewById(R.id.button_image);
         checkPermission();
         button_image.setOnClickListener(new View.OnClickListener() {
@@ -45,4 +49,14 @@ public class MainActivity extends AppCompatActivity {
             }, 0);
         }
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @NonNull Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            imageview.setImageBitmap(imageBitmap);
+        }
+    }
+
 }
